@@ -23,8 +23,7 @@ jobs:
       - name: Create comment
         uses: peter-evans/create-or-update-comment@v3
         with:
-          issue-number: ${{ github.event.pull_request.number }}
+          issue-number: ${{ github.event.number }}
           body: |
-            This PR COMMENT - ${{ github.event.pull_request.number }}
             Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}
             Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}
