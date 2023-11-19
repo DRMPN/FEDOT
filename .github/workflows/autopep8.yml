@@ -25,5 +25,5 @@ jobs:
         with:
           issue-number: ${{ github.event.pull_request.number }}
           body: |
-            "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
-            "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
+            Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}
+            Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}
