@@ -14,7 +14,8 @@ jobs:
         with:
           commit-message: autopep8 action fixes
           title: Fixes by autopep8 action
-          body: This is an auto-generated PR with fixes by autopep8.
+          body: This is an auto-generated PR with fixes by autopep8 in ${{ github.base_ref }}.
           labels: autopep8, automated pr
-          reviewers: drmpn
+          assignees: ${{ github.actor }}
+          reviewers: drmpn, ${{ github.actor }}
           branch: autopep8-patches
