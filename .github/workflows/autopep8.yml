@@ -26,7 +26,7 @@ jobs:
           issue-number: ${{ github.event.number }}
           body: |
             event number - ${{ github.event.number }}
-            pr number - ${{ github.event.pull_request.number }
+            pr number - ${{ github.event.pull_request.number }}
             pull_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
             Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}
             Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}
