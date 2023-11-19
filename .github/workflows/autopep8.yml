@@ -1,5 +1,5 @@
 name: Format python code
-on: push
+on: pull_request
 jobs:
   autopep8:
     runs-on: ubuntu-latest
@@ -23,7 +23,7 @@ jobs:
       - name: Create comment
         uses: peter-evans/create-or-update-comment@v3
         with:
-          issue-number: ${{ github.event.number }}
+          issue-number: ${{ github.event.pull_request.number }}
           body: |
             event number - ${{ github.event.number }}
             pr number - ${{ github.event.pull_request.number }}
