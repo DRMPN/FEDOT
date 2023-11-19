@@ -10,6 +10,7 @@ jobs:
         with:
           args: --recursive --in-place --aggressive --aggressive . --global-config .flake8
       - name: Create Pull Request
+        id: cpr
         uses: peter-evans/create-pull-request@v3
         with:
           commit-message: autopep8 action fixes
@@ -19,13 +20,10 @@ jobs:
           assignees: ${{ github.actor }}
           reviewers: drmpn, ${{ github.actor }}
           branch: autopep8-patches
-      - name: Comment in PR
-        uses: actions/github-script@v6
+      - name: Create comment
+        uses: peter-evans/create-or-update-comment@v3
         with:
-          script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: '👋 Thanks for reporting!'
-            })
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
+            "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
