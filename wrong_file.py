@@ -1,6 +1,10 @@
 def pytho():
-  pass
+    pass
+
+
 def asdf():
     print('hello')
+
+
 def abs(f):
-   print("h")
+    print("h")
