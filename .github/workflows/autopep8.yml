@@ -33,7 +33,6 @@ jobs:
         with:
           issue-number: ${{ github.event.pull_request.number }}
           body: |
-            foo - $PULL_NUMBER
             bar - ${{ $PULL_NUMBER }}
             event number - ${{ github.event.number }}
             pr number - ${{ github.event.pull_request.number }}
