@@ -40,6 +40,7 @@ jobs:
           reviewers: drmpn, ${{ github.actor }}
           branch: autopep8-patches
       - name: Create comment
+        if: steps.cpr.outputs.pull-request-url != ''
         uses: peter-evans/create-or-update-comment@v3
         with:
           issue-number: ${{steps.get_issue_number.outputs.result}}
