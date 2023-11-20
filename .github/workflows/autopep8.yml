@@ -9,17 +9,6 @@ jobs:
         uses: peter-evans/autopep8@v2
         with:
           args: --recursive --in-place --aggressive --aggressive . --global-config .flake8
-      - name: Create Pull Request
-        id: cpr
-        uses: peter-evans/create-pull-request@v3
-        with:
-          commit-message: autopep8 action fixes
-          title: Fixes by autopep8 action
-          body: This is an auto-generated PR with fixes by autopep8 in ${{ github.ref_name }}.
-          labels: autopep8, automated pr
-          assignees: ${{ github.actor }}
-          reviewers: drmpn, ${{ github.actor }}
-          branch: autopep8-patches
       - name: Get pr data
         uses: actions/github-script@v6
         id: get_pr_data
@@ -44,3 +33,14 @@ jobs:
             pull_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
             Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}
             Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v3
+        with:
+          commit-message: autopep8 action fixes
+          title: Fixes by autopep8 action
+          body: This is an auto-generated PR with fixes by autopep8 in ${{ github.ref_name }}.
+          labels: autopep8, automated pr
+          assignees: ${{ github.actor }}
+          reviewers: drmpn, ${{ github.actor }}
+          branch: autopep8-patches
