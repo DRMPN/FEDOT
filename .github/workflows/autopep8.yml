@@ -21,6 +21,25 @@ jobs:
                 repo: context.repo.repo,
               })
             ).data[0];
+      - name: PR Data
+        uses: actions/github-script@v6
+        id: get_issue_number
+        with:
+          script: |
+            if (context.issue.number) {
+              // Return issue number if present
+              return context.issue.number;
+            } else {
+              // Otherwise return issue number from commit
+              return (
+                await github.rest.repos.listPullRequestsAssociatedWithCommit({
+                  commit_sha: context.sha,
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                })
+              ).data[0].number;
+            }
+          result-encoding: string
       - name: Create comment
         uses: peter-evans/create-or-update-comment@v3
         with:
@@ -28,6 +47,7 @@ jobs:
           body: |
             foo - ${{ fromJson(steps.get_pr_data.outputs.result).title }}
             bar - ${{ fromJson(steps.get_pr_data.outputs.result).number }}
+            foobar - ${{steps.get_issue_number.outputs.result}}
             event number - ${{ github.event.number }}
             pr number - ${{ github.event.pull_request.number }}
             pull_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
