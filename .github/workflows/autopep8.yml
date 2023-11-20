@@ -44,5 +44,7 @@ jobs:
         with:
           issue-number: ${{steps.get_issue_number.outputs.result}}
           body: |
+            This is an auto-generated comment.
+            Found PEP8 problems, please go to ${{ steps.cpr.outputs.pull-request-url }} and merge it with yours to apply automatic fixes.
             Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}
             Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}
