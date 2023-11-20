@@ -20,31 +20,17 @@ jobs:
           assignees: ${{ github.actor }}
           reviewers: drmpn, ${{ github.actor }}
           branch: autopep8-patches
-      - name: Get issue number
-        uses: actions/github-script@v6
-        id: get_issue_number
-        with:
-          script: |
-            if (context.issue.number) {
-              // Return issue number if present
-              return context.issue.number;
-            } else {
-              // Otherwise return issue number from commit
-              return (
-                await github.rest.repos.listPullRequestsAssociatedWithCommit({
-                  commit_sha: context.sha,
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                })
-              ).data[0].number;
-            }
-          result-encoding: string
+      - name: Get Pull Request Number
+        id: pr
+        run: echo "::set-output name=pull_request_number::$(gh pr view --json number -q .number || echo "")"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Create comment
         uses: peter-evans/create-or-update-comment@v3
         with:
           issue-number: ${{ github.event.pull_request.number }}
           body: |
-            number - ${{steps.get_issue_number.outputs.result}}
+            foo - ${{ steps.pr.outputs.pull_request_number }}
             event number - ${{ github.event.number }}
             pr number - ${{ github.event.pull_request.number }}
             pull_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
