@@ -20,17 +20,21 @@ jobs:
           assignees: ${{ github.actor }}
           reviewers: drmpn, ${{ github.actor }}
           branch: autopep8-patches
-      - name: Get Pull Request Number
-        id: pr
-        run: echo "::set-output name=pull_request_number::$(gh pr view --json number -q .number || echo "")"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Test
+        uses: actions/github-script@0.3.0
+        with:
+          github-token: ${{github.token}}
+          script: |
+            const core = require('@actions/core')
+            const prNumber = context.payload.number;
+            core.exportVariable('PULL_NUMBER', prNumber);
       - name: Create comment
         uses: peter-evans/create-or-update-comment@v3
         with:
           issue-number: ${{ github.event.pull_request.number }}
           body: |
-            foo - ${{ steps.pr.outputs.pull_request_number }}
+            foo - $PULL_NUMBER
+            bar - ${{ $PULL_NUMBER }}
             event number - ${{ github.event.number }}
             pr number - ${{ github.event.pull_request.number }}
             pull_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
