@@ -5,16 +5,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Get PR Data
+        uses: actions/github-script@v6
+        id: get_issue_number
+        with:
+          script: |
+            if (context.issue.number) {
+              // Return issue number if present
+              return context.issue.number;
+            } else {
+              // Otherwise return issue number from commit
+              return (
+                await github.rest.repos.listPullRequestsAssociatedWithCommit({
+                  commit_sha: context.sha,
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                })
+              ).data[0].number;
+            }
+          result-encoding: string
+      - name: print-issue-number
+        run: echo '${{steps.get_issue_number.outputs.result}}'
       - name: autopep8
         id: autopep8
         uses: peter-evans/autopep8@v2
         with:
           args: --exit-code --max-line-length 120 --recursive --in-place --aggressive --aggressive .
-      - name: PRINT VARIABLES
-        run: |
-          echo '${{ github.event.pull_request.number }}'
-          echo '${{ toJSON(github.event) }}'
-          echo '${{ toJSON(github) }}'
       - name: Fail if autopep8 made changes
         if: steps.autopep8.outputs.exit-code == 2
         run: exit 1
