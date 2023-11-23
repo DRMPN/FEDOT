@@ -11,7 +11,7 @@ jobs:
         with:
           args: --exit-code --max-line-length 120 --recursive --in-place --aggressive --aggressive .
       - name: PRINT VARIABLES
-        run: echo ${{ github.event }}
+        run: echo '${{ toJSON(github) }}'
       - name: Fail if autopep8 made changes
         if: steps.autopep8.outputs.exit-code == 2
         run: exit 1
