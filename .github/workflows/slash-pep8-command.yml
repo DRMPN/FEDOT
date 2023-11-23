@@ -1,0 +1,40 @@
+# - name: Get PR Data
+#         uses: actions/github-script@v6
+#         id: get_issue_number
+#         with:
+#           script: |
+#             if (context.issue.number) {
+#               // Return issue number if present
+#               return context.issue.number;
+#             } else {
+#               // Otherwise return issue number from commit
+#               return (
+#                 await github.rest.repos.listPullRequestsAssociatedWithCommit({
+#                   commit_sha: context.sha,
+#                   owner: context.repo.owner,
+#                   repo: context.repo.repo,
+#                 })
+#               ).data[0].number;
+#             }
+#           result-encoding: string
+#       - name: Create Pull Request
+#         id: cpr
+#         uses: peter-evans/create-pull-request@v3
+#         with:
+#           commit-message: autopep8 action fixes
+#           title: Fixes by autopep8 action
+#           body: This is an auto-generated PR with fixes by autopep8 in ${{ github.ref_name }}.
+#           labels: autopep8, automated pr
+#           assignees: ${{ github.actor }}
+#           reviewers: drmpn, ${{ github.actor }}
+#           branch: autopep8-patches
+#       - name: Create comment
+#         if: steps.cpr.outputs.pull-request-url != ''
+#         uses: peter-evans/create-or-update-comment@v3
+#         with:
+#           issue-number: ${{steps.get_issue_number.outputs.result}}
+#           body: |
+#             This is an auto-generated comment.
+#             Found PEP8 problems, please go to ${{ steps.cpr.outputs.pull-request-url }} and merge it with yours to apply automatic fixes.
+#             Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}
+#             Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}
