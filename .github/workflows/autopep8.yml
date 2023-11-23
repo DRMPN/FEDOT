@@ -60,7 +60,7 @@ jobs:
           body: |
             Code in this pull request **still** contains PEP8 errors, please write the command `/autopep8` in the comments below to create another pull request with automatic fixes.
 
-            ##### Comment last updated at ${{ github.event.repository.updated_at}}
+            ##### Comment last updated at ${{ github.event.head_commit.timestamp }}
           reactions: eyes
       - name: Update comment if fixed
         if: ${{ steps.fc.outputs.comment-id != '' && steps.autopep8.outputs.exit-code != 2}}
@@ -71,7 +71,7 @@ jobs:
           body: |
             All PEP8 errors has been fixed, thanks <3
 
-            ##### Comment last updated at ${{ github.event.repository.updated_at}}
+            ##### Comment last updated at ${{ github.event.head_commit.timestamp }}
           reactions: hooray
       - name: Fail if autopep8 made changes
         if: steps.autopep8.outputs.exit-code == 2
