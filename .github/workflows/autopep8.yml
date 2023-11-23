@@ -24,13 +24,37 @@ jobs:
               ).data[0].number;
             }
           result-encoding: string
-      - name: print-issue-number
-        run: echo '${{steps.get_issue_number.outputs.result}}'
       - name: autopep8
         id: autopep8
         uses: peter-evans/autopep8@v2
         with:
           args: --exit-code --max-line-length 120 --recursive --in-place --aggressive --aggressive .
+      - name: Find Comment
+        uses: peter-evans/find-comment@v2
+        id: fc
+        with:
+          issue-number: ${{steps.get_issue_number.outputs.result}}
+          comment-author: "github-actions[bot]"
+          body-includes: This comment was written by a bot!
+      - name: Create comment if autopep8 made NO changes
+        if: ${{ steps.fc.outputs.comment-id == '' && steps.autopep8.outputs.exit-code != 2}}
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          issue-number: ${{steps.get_issue_number.outputs.result}}
+          body: |
+            This comment was written by a bot!
+            Code has no PEP8 errors!
+          reactions: hooray
+      - name: Create comment if autopep8 made changes
+        if: ${{ steps.fc.outputs.comment-id == '' && steps.autopep8.outputs.exit-code == 2}}
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          issue-number: ${{steps.get_issue_number.outputs.result}}
+          body: |
+            This comment was written by a bot!
+            Code in this pull request contains PEP8 errors, please use the command `/autopep8` 
+            in the comments to create another pull request with automatic fixes.
+          reactions: confused
       - name: Fail if autopep8 made changes
         if: steps.autopep8.outputs.exit-code == 2
         run: exit 1
