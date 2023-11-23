@@ -35,14 +35,12 @@ jobs:
         with:
           issue-number: ${{steps.get_issue_number.outputs.result}}
           comment-author: "github-actions[bot]"
-          body-includes: This comment was written by a bot!
       - name: Create comment if autopep8 made NO changes
         if: ${{ steps.fc.outputs.comment-id == '' && steps.autopep8.outputs.exit-code != 2}}
         uses: peter-evans/create-or-update-comment@v3
         with:
           issue-number: ${{steps.get_issue_number.outputs.result}}
           body: |
-            This comment was written by a bot!
             Code has no PEP8 errors!
           reactions: hooray
       - name: Create comment if autopep8 made changes
@@ -51,10 +49,24 @@ jobs:
         with:
           issue-number: ${{steps.get_issue_number.outputs.result}}
           body: |
-            This comment was written by a bot!
-            Code in this pull request contains PEP8 errors, please use the command `/autopep8` 
-            in the comments to create another pull request with automatic fixes.
+            Code in this pull request contains PEP8 errors, please write the command `/autopep8` in the comments below to create another pull request with automatic fixes.
           reactions: confused
+      - name: Update comment if NOT fixed
+        if: ${{ steps.fc.outputs.comment-id != '' && steps.autopep8.outputs.exit-code == 2}}
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          body: |
+            Code in this pull request **still** contains PEP8 errors, please write the command `/autopep8` in the comments below to create another pull request with automatic fixes.
+          reactions: eyes
+      - name: Update comment if fixed
+        if: ${{ steps.fc.outputs.comment-id != '' && steps.autopep8.outputs.exit-code != 2}}
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          body: |
+            All PEP8 errors has been fixed, thanks <3
+          reactions: hooray
       - name: Fail if autopep8 made changes
         if: steps.autopep8.outputs.exit-code == 2
         run: exit 1
