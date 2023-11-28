@@ -42,7 +42,6 @@ jobs:
           issue-number: ${{steps.get_issue_number.outputs.result}}
           body: |
             Code has no PEP8 errors!
-          reactions: hooray
       - name: Create comment if autopep8 made changes
         if: ${{ steps.fc.outputs.comment-id == '' && steps.autopep8.outputs.exit-code == 2}}
         uses: peter-evans/create-or-update-comment@v3
@@ -50,31 +49,26 @@ jobs:
           issue-number: ${{steps.get_issue_number.outputs.result}}
           body: |
             Code in this pull request contains PEP8 errors, please write the command `/autopep8` in the comments below to create another pull request with automatic fixes.
-          reactions: confused
       - name: Update comment if NOT fixed
         if: ${{ steps.fc.outputs.comment-id != '' && steps.autopep8.outputs.exit-code == 2}}
         uses: peter-evans/create-or-update-comment@v3
         with:
           comment-id: ${{ steps.fc.outputs.comment-id }}
           edit-mode: replace
-          reactions-edit-mode: replace
           body: |
             Code in this pull request **still** contains PEP8 errors, please write the command `/autopep8` in the comments below to create another pull request with automatic fixes.
 
             ##### Comment last updated at ${{ github.event.head_commit.timestamp }}
-          reactions: confused
       - name: Update comment if fixed
         if: ${{ steps.fc.outputs.comment-id != '' && steps.autopep8.outputs.exit-code != 2}}
         uses: peter-evans/create-or-update-comment@v3
         with:
           comment-id: ${{ steps.fc.outputs.comment-id }}
           edit-mode: replace
-          reactions-edit-mode: replace
           body: |
             All PEP8 errors has been fixed, thanks <3
 
             ##### Comment last updated at ${{ github.event.head_commit.timestamp }}
-          reactions: hooray
       - name: Fail if autopep8 made changes
         if: steps.autopep8.outputs.exit-code == 2
         run: exit 1
