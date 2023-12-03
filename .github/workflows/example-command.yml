@@ -25,7 +25,7 @@ jobs:
           body: This is an auto-generated PR with fixes by autopep8 in ${{ github.ref_name }}.
           labels: autopep8, automated pr
           assignees: ${{ github.actor }}
-          reviewers: drmpn, ${{ github.actor }}
+          reviewers: ${{ github.actor }}
           branch: autopep8-patches
       - name: Create comment
         if: steps.cpr.outputs.pull-request-url != ''
@@ -35,5 +35,3 @@ jobs:
           issue-number: ${{ github.event.client_payload.github.payload.issue.number }}
           body: |
             Fixed PEP8 problems, please go to ${{ steps.cpr.outputs.pull-request-url }} and merge it.
-            Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}
-            Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}
