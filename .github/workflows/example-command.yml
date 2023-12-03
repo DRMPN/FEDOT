@@ -21,7 +21,7 @@ jobs:
         uses: peter-evans/create-pull-request@v5
         with:
           commit-message: autopep8 action fixes
-          title: Fixes by autopep8 action
+          title: Fixes by autopep8 in ${{ github.event.client_payload.pull_request.head.ref }}.
           body: This is an auto-generated PR with fixes by autopep8 in ${{ github.event.client_payload.pull_request.head.ref }}.
           labels: autopep8, automated pr
           assignees: ${{ github.actor }}
