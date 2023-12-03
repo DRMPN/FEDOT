@@ -7,8 +7,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Slash Command Dispatch
-        uses: peter-evans/slash-command-dispatch@v2
+        uses: peter-evans/slash-command-dispatch@v3
         with:
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          reactions: false
           commands: example
-          repository: DRMPN/FEDOT
+          issue-type: pull-request
