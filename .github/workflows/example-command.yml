@@ -6,25 +6,6 @@ jobs:
   example:
     runs-on: ubuntu-latest
     steps:
-      - name: Get PR Data
-        uses: actions/github-script@v6
-        id: get_issue_number
-        with:
-          script: |
-            if (context.issue.number) {
-              // Return issue number if present
-              return context.issue.number;
-            } else {
-              // Otherwise return issue number from commit
-              return (
-                await github.rest.repos.listPullRequestsAssociatedWithCommit({
-                  commit_sha: context.sha,
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                })
-              ).data[0].number;
-            }
-          result-encoding: string
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v3
@@ -40,7 +21,8 @@ jobs:
         if: steps.cpr.outputs.pull-request-url != ''
         uses: peter-evans/create-or-update-comment@v3
         with:
-          issue-number: ${{steps.get_issue_number.outputs.result}}
+          repository: ${{ github.event.client_payload.github.payload.repository.full_name }}
+          issue-number: ${{ github.event.client_payload.github.payload.issue.number }}
           body: |
             Fixed PEP8 problems, please go to ${{ steps.cpr.outputs.pull-request-url }} and merge it.
             Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}
