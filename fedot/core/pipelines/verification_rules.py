@@ -27,7 +27,7 @@ def has_final_operation_as_model(pipeline: Pipeline):
     """ Check if the operation in root node is model or not """
     root_node = pipeline.root_node
     # TODO @YamLyubov refactor check for AtomizedModel (fix circular import)
-    if type(root_node.operation) is not Model and root_node.operation.operation_type != atomized_model_type():
+    if not isinstance(root_node.operation, Model) and root_node.operation.operation_type != atomized_model_type():
         raise ValueError(f'{ERROR_PREFIX} Root operation is not a model')
 
     return True
@@ -347,7 +347,7 @@ def __check_decompose_parent_position(nodes_to_check: list):
         parents = decompose_node.nodes_from
         model_parent = parents[0]
 
-        if type(model_parent.operation) is not Model:
+        if not isinstance(model_parent.operation, Model):
             raise ValueError(f'{ERROR_PREFIX} For decompose operation Model as first parent is required')
 
 

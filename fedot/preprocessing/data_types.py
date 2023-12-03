@@ -1,4 +1,5 @@
 from __future__ import annotations
+from typing import TYPE_CHECKING
 
 from copy import copy
 
@@ -9,7 +10,6 @@ from golem.core.log import LoggerAdapter, default_log
 from fedot.core.repository.tasks import Task, TaskTypesEnum
 
 NoneType = type(None)
-from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from fedot.core.data.data import InputData

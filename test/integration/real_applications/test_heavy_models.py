@@ -3,8 +3,6 @@ from examples.simple.time_series_forecasting.ts_pipelines import cgru_pipeline
 from fedot.core.pipelines.pipeline_builder import PipelineBuilder
 
 
-
-
 def test_cgru_forecasting():
     horizon = 5
     window_size = 200
