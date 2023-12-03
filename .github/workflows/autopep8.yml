@@ -4,26 +4,7 @@ jobs:
   autopep8:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Get PR Data
-        uses: actions/github-script@v6
-        id: get_issue_number
-        with:
-          script: |
-            if (context.issue.number) {
-              // Return issue number if present
-              return context.issue.number;
-            } else {
-              // Otherwise return issue number from commit
-              return (
-                await github.rest.repos.listPullRequestsAssociatedWithCommit({
-                  commit_sha: context.sha,
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                })
-              ).data[0].number;
-            }
-          result-encoding: string
+      - uses: actions/checkout@v4
       - name: autopep8
         id: autopep8
         uses: peter-evans/autopep8@v2
@@ -33,20 +14,20 @@ jobs:
         uses: peter-evans/find-comment@v2
         id: fc
         with:
-          issue-number: ${{steps.get_issue_number.outputs.result}}
+          issue-number: ${{ github.event.client_payload.github.payload.issue.number }}
           comment-author: "github-actions[bot]"
       - name: Create comment if autopep8 made NO changes
         if: ${{ steps.fc.outputs.comment-id == '' && steps.autopep8.outputs.exit-code != 2}}
         uses: peter-evans/create-or-update-comment@v3
         with:
-          issue-number: ${{steps.get_issue_number.outputs.result}}
+          issue-number: ${{ github.event.client_payload.github.payload.issue.number }}
           body: |
             Code has no PEP8 errors!
       - name: Create comment if autopep8 made changes
         if: ${{ steps.fc.outputs.comment-id == '' && steps.autopep8.outputs.exit-code == 2}}
         uses: peter-evans/create-or-update-comment@v3
         with:
-          issue-number: ${{steps.get_issue_number.outputs.result}}
+          issue-number: ${{ github.event.client_payload.github.payload.issue.number }}
           body: |
             Code in this pull request contains PEP8 errors, please write the `/autopep8` command in the comments below to create pull request with automatic fixes.
       - name: Update comment if NOT fixed
