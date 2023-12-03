@@ -13,4 +13,3 @@ jobs:
           reactions: false
           commands: example
           issue-type: pull-request
-          dispatch-type: workflow
