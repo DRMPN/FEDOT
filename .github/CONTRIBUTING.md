@@ -1,10 +1,10 @@
 # Contributing to Fedot
 
 We welcome you to [check the existing
-issues](https://github.com/nccr-itmo/FEDOT/issues) for bugs or
+issues](https://github.com/aimclub/FEDOT/issues) for bugs or
 enhancements to work on. If you have an idea for an extension to FEDOT,
 please [file a new
-issue](https://github.com/nccr-itmo/FEDOT/issues/new) so we can
+issue](https://github.com/aimclub/FEDOT/issues/new) so we can
 discuss it.
 
 Make sure to familiarize yourself with the project layout before making
