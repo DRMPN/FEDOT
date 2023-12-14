@@ -34,7 +34,7 @@ jobs:
         with:
           issue-number: ${{ steps.pr.outputs.pull_request_number }}
           body: |
-            Code in this pull request contains PEP8 errors, please write the `/autopep8` command in the comments below to create commit with automatic fixes.
+            Code in this pull request contains PEP8 errors, please write the `/fix-pep8` command in the comments below to create commit with automatic fixes.
       - name: Update comment if NOT fixed
         if: ${{ steps.fc.outputs.comment-id != '' && steps.autopep8.outputs.exit-code == 2}}
         uses: peter-evans/create-or-update-comment@v3
@@ -42,7 +42,7 @@ jobs:
           comment-id: ${{ steps.fc.outputs.comment-id }}
           edit-mode: replace
           body: |
-            Code in this pull request **still** contains PEP8 errors, please write the `/autopep8` command in the comments below to create commit with automatic fixes.
+            Code in this pull request **still** contains PEP8 errors, please write the `/fix-pep8` command in the comments below to create commit with automatic fixes.
 
             ##### Comment last updated at ${{ github.event.head_commit.timestamp }}
       - name: Update comment if fixed
@@ -52,7 +52,7 @@ jobs:
           comment-id: ${{ steps.fc.outputs.comment-id }}
           edit-mode: replace
           body: |
-            All PEP8 errors has been fixed, thanks ❤
+            All PEP8 errors has been fixed, thanks :heart:
 
             ##### Comment last updated at ${{ github.event.head_commit.timestamp }}
       - name: Fail if autopep8 made changes
