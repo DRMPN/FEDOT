@@ -10,6 +10,6 @@ jobs:
         uses: peter-evans/slash-command-dispatch@v3
         with:
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
-          reactions: false
-          commands: example
+          reactions: true
+          commands: fix-pep8
           issue-type: pull-request
