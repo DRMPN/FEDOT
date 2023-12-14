@@ -1,10 +1,6 @@
 def abc():
     return "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-
-
 def hello():
-    return 'how?'
-
-
+  return 'how?'
 def FunctionName():
-    return None
+   return None
