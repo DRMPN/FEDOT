@@ -1,9 +1,9 @@
-name: example-command
+name: fix-pep8-command
 on:
   repository_dispatch:
-    types: [example-command]
+    types: [fix-pep8-command]
 jobs:
-  example:
+  fix-pep8:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
