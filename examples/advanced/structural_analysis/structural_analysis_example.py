@@ -31,6 +31,7 @@ class SAObjective(Objective):
     This objective has to evaluate pipeline in __call__ method and have 'metrics' field to identify
     which metrics are optimized.
     """
+
     def __init__(self,
                  objective: Callable,
                  quality_metrics: Dict[Any, Callable],
