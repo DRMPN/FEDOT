@@ -18,10 +18,10 @@ jobs:
           format: markdown
           disable_web_page_preview: true
           message: |
-            ${{ github.event.repository.name }}: the PR[#${{ github.event.number }}](${{ github.event.pull_request.html_url }}) *"${{ github.event.pull_request.title }}"* was merged.
+            ${{ github.event.repository.name }}: the PR [#${{ github.event.number }}](${{ github.event.pull_request.html_url }}) *"${{ github.event.pull_request.title }}"* was merged.
             
             Description:
-            >${{ github.event.pull_request.body }}||
+            ${{ github.event.pull_request.body }}
             
             Check it out to keep your local repository updated!
 
@@ -39,4 +39,4 @@ jobs:
           format: markdown
           disable_web_page_preview: true
           message: | 
-            ${{ github.event.repository.name }}: the PR[#${{ github.event.number }}](${{ github.event.pull_request.html_url }}) *"${{ github.event.pull_request.title }}"* was closed.
+            ${{ github.event.repository.name }}: the PR [#${{ github.event.number }}](${{ github.event.pull_request.html_url }}) *"${{ github.event.pull_request.title }}"* was closed.
