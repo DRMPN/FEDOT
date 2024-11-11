@@ -15,16 +15,15 @@ jobs:
         with:
           to: ${{ secrets.CHAT_ID }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: |
-            ${{ github.event.repository.name }}: 
-            the `${{ github.event_name }}` *${{ github.event.pull_request.title }}* 
-            (#${{ github.event.number }}) was merged.\n
-            [Link](${{ github.event.pull_request.html_url }}).
-            \nDescription:\n${{ github.event.pull_request.body }}
-            \n
-            \nCheck it out to keep your local repository updated.
           format: markdown
           disable_web_page_preview: true
+          message: |
+            ${{ github.event.repository.name }}: the PR[#${{ github.event.number }}](${{ github.event.pull_request.html_url }}) *"${{ github.event.pull_request.title }}"* was merged.
+            
+            Description:
+            >${{ github.event.pull_request.body }}||
+            
+            Check it out to keep your local repository updated!
 
 
   close_job:
@@ -40,4 +39,4 @@ jobs:
           format: markdown
           disable_web_page_preview: true
           message: | 
-            ${{ github.event.repository.name }}: the PR [#${{ github.event.number }}](${{ github.event.pull_request.html_url }}) *"${{ github.event.pull_request.title }}"* was closed.
+            ${{ github.event.repository.name }}: the PR[#${{ github.event.number }}](${{ github.event.pull_request.html_url }}) *"${{ github.event.pull_request.title }}"* was closed.
